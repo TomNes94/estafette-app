@@ -34,15 +34,6 @@ import { getJSON, getString, request, HttpResponse } from "tns-core-modules/http
 const appSettings = require("tns-core-modules/application-settings");
 import refreshAccessTokenMixin from "../utils/refreshAccessToken.js";
 
-let websocketsAvailability = false;
-
-try {
-	require("nativescript-websockets");
-	websocketsAvailability = false;
-} catch (e) {
-	console.log("websokcets error" + e);
-}
-
 export default {
 	data() {
 		return {
@@ -115,9 +106,8 @@ export default {
 			if (this.locations.length > 1) {
 				this.match.progress =
 					Math.round((this.match.progress + geolocation.distance(this.locations[this.locations.length - 1], this.locations[this.locations.length - 2])) * 10) / 10;
-				if (websocketsAvailability) {
-					this.socket.send(JSON.stringify({ distanceCovered: this.match.progress }));
-				} else if (this.locations.length % 10 === 0) {
+
+				if (this.locations.length % 10 === 0) {
 					let result = await this.postProgress();
 
 					if (result.message === "Unauthorized!") {
@@ -140,36 +130,17 @@ export default {
 			}
 		},
 		watchLocation() {
-			try {
-				if (websocketsAvailability) {
-					this.socket = new WebSocket(this.$ngrokWs);
-					this.socket.addEventListener("open", function(evt) {
-						console.log("We are Open");
-						evt.target.send("Hello");
-					});
-					this.socket.addEventListener("message", function(evt) {
-						console.log("We got a message: ", evt.data);
-					});
-					this.socket.addEventListener("close", function(evt) {
-						console.log("The Socket was Closed:", evt.code, evt.reason);
-					});
-					this.socket.addEventListener("error", function(evt) {
-						console.log("The socket had an error", evt.error);
-					});
-				}
-				this.watchIds.push(
-					geolocation.watchLocation(
-						this.onLocationHandler,
-						e => {
-							console.log("Error middle: " + e.message);
-						},
-						this.geoOptions
-					)
-				);
-			} catch (ex) {
-				console.log("Error start: " + ex.message);
-			}
+			this.watchIds.push(
+				geolocation.watchLocation(
+					this.onLocationHandler,
+					e => {
+						console.log("Error middle: " + e.message);
+					},
+					this.geoOptions
+				)
+			);
 		},
+
 		async fetchParticipantInfo() {
 			let response = await request({
 				url: this.$ngrokUrl + "/api/participant",
