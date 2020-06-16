@@ -1,24 +1,25 @@
 <template>
-	<Page class="page" actionBarHidden="true">
-		<BottomNavigation selectedIndex="0">
+	<Page>
+		<BottomNavigation>
 			<TabStrip>
 				<TabStripItem>
 					<Label text="Home"></Label>
 					<Image src="~/images/house-user-solid.png" stretch="aspectFit"></Image>
 				</TabStripItem>
 				<TabStripItem>
-					<Label text="Team"></Label>
-					<Image src="~/images/users-cog-solid.png" stretch="aspectFit"></Image>
-				</TabStripItem>
-				<TabStripItem>
 					<Label text="Stand"></Label>
 					<Image src="~/images/flag-checkered-solid.png" stretch="aspectFit"></Image>
+				</TabStripItem>
+				<TabStripItem>
+					<Label text="Team"></Label>
+					<Image src="~/images/users-cog-solid.png" stretch="aspectFit"></Image>
 				</TabStripItem>
 				<TabStripItem>
 					<Label text="Wedstrijd"></Label>
 					<Image src="~/images/running-solid.png" stretch="aspectFit"></Image>
 				</TabStripItem>
 			</TabStrip>
+
 			<TabContentItem>
 				<HomeTab />
 			</TabContentItem>

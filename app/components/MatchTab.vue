@@ -1,5 +1,5 @@
 <template>
-	<GridLayout>
+	<GridLayout class="background">
 		<FlexboxLayout v-if="loading" class="progress-counter" flexDirection="column" justifyContent="center" alignItems="center">
 			<ActivityIndicator :busy="loading"></ActivityIndicator>
 			<Label text="GPS kalibreren!"></Label>
@@ -15,12 +15,14 @@
 					<Label class="progress-counter" text="Finish bereikt!"></Label>
 				</FlexboxLayout>
 			</FlexboxLayout>
-			<FlexboxLayout class="progress-counter" justifyContent="center" alignItems="center" v-else>
+			<FlexboxLayout class="background-white" justifyContent="center" alignItems="center" v-else>
 				<FlexboxLayout class="progress-counter" justifyContent="center" alignItems="center" v-if="participant.isFinished">
-					<Button class="start-button" text="Start" @tap="startCounter"></Button>
-				</FlexboxLayout>
-				<FlexboxLayout class="progress-counter" justifyContent="center" alignItems="center" v-else>
 					<Label class="progress-counter" :text="participant.status" textWrap="true"></Label>
+				</FlexboxLayout>
+				<FlexboxLayout class="progress-counter" flexDirection="column" justifyContent="center" alignItems="center" v-else>
+					<Label class="progress-counter" :text="participant.status" textWrap="true" marginBottom="40"></Label>
+					<Label text="Make sure not to lock your screen!" textWrap="true" marginLeft="20" marginBottom="40"></Label>
+					<Button class="start-button" text="Start" @tap="startCounter"></Button>
 				</FlexboxLayout>
 			</FlexboxLayout>
 		</GridLayout>
@@ -33,6 +35,7 @@ import { Accuracy } from "tns-core-modules/ui/enums";
 import { getJSON, getString, request, HttpResponse } from "tns-core-modules/http";
 const appSettings = require("tns-core-modules/application-settings");
 import refreshAccessTokenMixin from "../utils/refreshAccessToken.js";
+import { keepAwake, allowSleepAgain } from "nativescript-insomnia";
 
 export default {
 	data() {
@@ -69,10 +72,11 @@ export default {
 	},
 	mixins: [refreshAccessTokenMixin],
 	methods: {
-		startCounter() {
+		async startCounter() {
 			this.loading = true;
 			this.match.isStarted = true;
 			this.initialCounts = 0;
+			await keepAwake();
 			this.watchLocation();
 		},
 
@@ -118,12 +122,14 @@ export default {
 							this.participant.isFinished = true;
 							let watchId = this.watchIds[0];
 							geolocation.clearWatch(watchId);
+							allowSleepAgain();
 						}
 					} else {
 						if (result.participantIsFinished) {
 							this.match.isEnded = true;
 							let watchId = this.watchIds[0];
 							geolocation.clearWatch(watchId);
+							allowSleepAgain();
 						}
 					}
 				}
@@ -164,8 +170,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.background {
+	background-image: url("~/images/background.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	height: 100%;
+	width: 100%;
+}
+
 .component-container {
-	background-color: rgba(200, 236, 243, 0.993);
 	height: 100%;
 	width: 100%;
 }

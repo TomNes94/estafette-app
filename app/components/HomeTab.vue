@@ -73,8 +73,10 @@ export default {
 	font-size: 18px;
 }
 .component-container {
-	border: 2px solid #eb6c05;
-	box-sizing: border-box;
+	background-image: url("~/images/background.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
 }
 .icon {
 	width: 70%;

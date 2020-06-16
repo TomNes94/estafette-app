@@ -1,24 +1,16 @@
 <template>
 	<FlexboxLayout class="component-container" flexDirection="column">
 		<Label class="title" :text="teamInfo.teamName"></Label>
-		<FlexboxLayout flexGrow="2" class="component-container" flexDirection="column" justifyContent="center">
-			<FlexboxLayout class="row" justifyContent="space-between">
-				<Label class="label-info" text="My distance: "></Label>
-				<Label class="label-info" :text="participantInfo.distance / 1000 + ' km'"></Label>
-			</FlexboxLayout>
-			<FlexboxLayout class="row" justifyContent="space-between">
-				<Label class="label-info" text="Players finished: "></Label>
-				<Label class="label-info" :text="teamInfo.playersFinished - 1"></Label>
-			</FlexboxLayout>
-			<FlexboxLayout class="row" justifyContent="space-between">
-				<Label class="label-info" text="Total team distance: "></Label>
-				<Label class="label-info" :text="teamInfo.totalDistance / 1000 + ' km'"></Label>
-			</FlexboxLayout>
-			<FlexboxLayout class="row" justifyContent="space-between">
-				<Label class="label-info" text="Team dist. remaining: "></Label>
-				<Label class="label-info" :text="distanceRemaining"></Label>
-			</FlexboxLayout>
-		</FlexboxLayout>
+		<PullToRefresh @refresh="refreshList">
+			<ListView for="item in listInfo">
+				<v-template>
+					<FlexboxLayout height="150" class="row" justifyContent="space-between">
+						<Label class="label-info" :text="item.label"></Label>
+						<Label class="label-info" :text="item.value"></Label>
+					</FlexboxLayout>
+				</v-template>
+			</ListView>
+		</PullToRefresh>
 	</FlexboxLayout>
 </template>
 
@@ -44,11 +36,50 @@ export default {
 	computed: {
 		distanceRemaining() {
 			return Math.round((this.teamInfo.totalDistance - this.teamInfo.distanceCovered) / 100) / 10 + " km";
+		},
+		listInfo() {
+			return [
+				{
+					label: "My distance: ",
+					value: this.participantInfo.distance / 1000 + " km"
+				},
+				{
+					label: "My average speed: ",
+					value:
+						this.participantInfo.distanceCovered === null
+							? 0 + "km/h"
+							: Math.round((this.participantInfo.distanceCovered / 1000 / (this.participantInfo.timeTaken / 360000)) * 1000) / 100 + " km/h"
+				},
+				{
+					label: "Players finished: ",
+					value: this.teamInfo.totalParticipantsFinished
+				},
+				{
+					label: "Total team distance: ",
+					value: this.teamInfo.totalDistance / 1000 + " km"
+				},
+				{
+					label: "Team dist. remaining: ",
+					value: Math.round((this.teamInfo.totalDistance - this.teamInfo.distanceCovered) / 100) / 10 + " km"
+				},
+				{
+					label: "Team average speed: ",
+					value:
+						this.teamInfo.distanceCovered === null || this.teamInfo.distanceCovered === 0
+							? 0 + "km/h"
+							: Math.round((this.teamInfo.distanceCovered / 1000 / (this.teamInfo.totalTimeTaken / 360000)) * 1000) / 100 + " km/h"
+				}
+			];
 		}
 	},
 	methods: {
-		fetchTeamInfo() {
-			request({
+		async refreshList(args) {
+			const pullRefresh = args.object;
+			await this.fetchTeamInfo();
+			pullRefresh.refreshing = false;
+		},
+		async fetchTeamInfo() {
+			let result = await request({
 				url: this.$ngrokUrl + "/api/teams",
 				method: "POST",
 				headers: {
@@ -58,13 +89,12 @@ export default {
 				content: JSON.stringify({
 					accessToken: appSettings.getString("accessToken")
 				})
-			}).then(result => {
-				result = result.content.toJSON();
-				this.teamInfo = { ...result.teamInfo };
-				//TODO: Edit below
-				this.teamInfo.playersFinished = 2;
-				this.participantInfo = { ...result.participantInfo };
 			});
+			result = result.content.toJSON();
+			this.teamInfo = { ...result.teamInfo };
+			this.participantInfo = { ...result.participantInfo };
+
+			return;
 		}
 	}
 };
@@ -72,7 +102,11 @@ export default {
 
 <style lang="scss" scoped>
 .component-container {
-	margin-top: 15px;
+	background-image: url("~/images/background.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	height: 100%;
 }
 .row {
 	margin: 5% 10% 5% 10%;
@@ -81,6 +115,7 @@ export default {
 	align-self: center;
 	font-size: 40px;
 	font-weight: bold;
+	height: 20%;
 }
 .label-info {
 	font-size: 18px;

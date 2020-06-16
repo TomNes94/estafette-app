@@ -53,7 +53,7 @@
 	<false/>
 	<key>UIBackgroundModes</key>
 	<array>
-	   <string>location</string>
+		<string>location</string>
 		<string>fetch</string>
 	</array>
 </dict>

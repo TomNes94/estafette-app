@@ -29,12 +29,12 @@ export default {
 
 <style lang="scss" scoped>
 .page {
-	width: 100%;
+	width: 85%;
 	padding: 0;
 	margin: 0;
 }
 .component-container {
-	width: 100%;
+	width: 85%;
 	height: 60%;
 	font-family: "Poppins Regular", "Poppins-Regular", "Poppins Black", "Poppins-Black", "Poppins-Bold", "Poppins Bold", Arial, Helvetica, sans-serif;
 }

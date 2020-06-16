@@ -52,6 +52,7 @@
 const appSettings = require("tns-core-modules/application-settings");
 const jwtDecode = require("jwt-decode");
 const Toast = require("nativescript-toast");
+import MainPage from "./MainPage";
 
 import { getJSON, getString, request, HttpResponse } from "tns-core-modules/http";
 export default {
@@ -63,7 +64,7 @@ export default {
 			},
 			newuser: {
 				email: "tomvannes1@hotmail.com",
-				password: null,
+				password: "",
 				passwordCheck: null
 			},
 			showRegistrationFormBool: false
@@ -74,9 +75,13 @@ export default {
 			this.$refs.password.nativeView.focus();
 		},
 		async submit() {
+			console.log("test123");
 			try {
 				if (this.user.email === "debug") {
-					this.$navigator.navigate("/main");
+					console.log("test456");
+
+					this.$navigateTo(MainPage);
+					console.log("test");
 					return;
 				}
 
@@ -97,7 +102,7 @@ export default {
 					appSettings.setString("accessToken", result.accessToken);
 					appSettings.setString("refreshToken", result.refreshToken);
 					appSettings.setNumber("userId", result.userId);
-					this.$navigator.navigate("/main");
+					this.$navigateTo(MainPage);
 				}
 			} catch (error) {
 				console.log(error);

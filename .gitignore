@@ -3,6 +3,8 @@ hooks/
 !hooks/after-createProject/*.js
 node_modules/
 platforms/
+.nsremote.config.json
+.nsremote.env.json
 
 # NativeScript Template
 *.js.map

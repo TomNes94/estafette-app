@@ -1,10 +1,15 @@
 <template>
-	<Navigator :defaultRoute="isLoggedIn ? '/main' : '/login'" />
+	<Frame>
+		<LoginPage v-if="isLoggedIn"></LoginPage>
+		<LoginPage v-else></LoginPage>
+	</Frame>
 </template>
 
 <script>
 const appSettings = require("tns-core-modules/application-settings");
 const jwtDecode = require("jwt-decode");
+import MainPage from "./components/MainPage";
+import LoginPage from "./components/LoginPage";
 
 export default {
 	computed: {
@@ -14,6 +19,10 @@ export default {
 				return parseInt(decodedJWT.exp) * 1000 > Date.now() ? true : false;
 			} else return false;
 		}
+	},
+	components: {
+		MainPage,
+		LoginPage
 	}
 };
 </script>
