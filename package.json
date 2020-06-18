@@ -1,42 +1,42 @@
 {
-  "nativescript": {
-    "id": "org.nativescript.estafetteapp",
-    "tns-ios": {
-      "version": "6.5.0"
-    },
-    "tns-android": {
-      "version": "6.5.1"
-    }
-  },
-  "description": "NativeScript Application",
-  "license": "SEE LICENSE IN <your-license-filename>",
-  "repository": "<fill-your-repository-here>",
-  "dependencies": {
-    "@nativescript/theme": "~2.3.3",
-    "@nstudio/nativescript-pulltorefresh": "^2.0.0",
-    "@vue/devtools": "^5.3.3",
-    "jwt-decode": "^2.2.0",
-    "nativescript-geolocation": "^5.1.0",
-    "nativescript-insomnia": "^1.2.3",
-    "nativescript-permissions": "^1.3.9",
-    "nativescript-pulltorefresh": "^2.3.0",
-    "nativescript-remote-builds": "^1.1.1",
-    "nativescript-toast": "^2.0.0",
-    "nativescript-toasty": "^3.0.0-alpha.2",
-    "nativescript-ui-listview": "^8.2.0",
-    "nativescript-vue": "~2.5.0",
-    "nativescript-vue-navigator": "^1.2.0",
-    "tns-core-modules": "^6.5.5"
-  },
-  "devDependencies": {
-    "@babel/core": "~7.1.0",
-    "@babel/preset-env": "~7.1.0",
-    "babel-loader": "~8.0.0",
-    "nativescript-dev-webpack": "~1.5.1",
-    "nativescript-vue-template-compiler": "~2.5.0",
-    "node-sass": "^4.14.1",
-    "vue-loader": "^15.9.2"
-  },
-  "gitHead": "2250137db8c1e0bd0eb543e8e4563cb71480c00d",
-  "readme": "NativeScript Application"
+	"nativescript": {
+		"id": "com.tomvannes.nl.acloop",
+		"tns-ios": {
+			"version": "6.5.0"
+		},
+		"tns-android": {
+			"version": "6.5.1"
+		}
+	},
+	"description": "NativeScript Application",
+	"license": "SEE LICENSE IN <your-license-filename>",
+	"repository": "<fill-your-repository-here>",
+	"dependencies": {
+		"@nativescript/theme": "~2.3.3",
+		"@nstudio/nativescript-pulltorefresh": "^2.0.0",
+		"@vue/devtools": "^5.3.3",
+		"jwt-decode": "^2.2.0",
+		"nativescript-geolocation": "^5.1.0",
+		"nativescript-insomnia": "^1.2.3",
+		"nativescript-permissions": "^1.3.9",
+		"nativescript-pulltorefresh": "^2.3.0",
+		"nativescript-remote-builds": "^1.1.1",
+		"nativescript-toast": "^2.0.0",
+		"nativescript-toasty": "^3.0.0-alpha.2",
+		"nativescript-ui-listview": "^8.2.0",
+		"nativescript-vue": "~2.5.0",
+		"nativescript-vue-navigator": "^1.2.0",
+		"tns-core-modules": "^6.5.5"
+	},
+	"devDependencies": {
+		"@babel/core": "~7.1.0",
+		"@babel/preset-env": "~7.1.0",
+		"babel-loader": "~8.0.0",
+		"nativescript-dev-webpack": "~1.5.1",
+		"nativescript-vue-template-compiler": "~2.5.0",
+		"node-sass": "^4.14.1",
+		"vue-loader": "^15.9.2"
+	},
+	"gitHead": "2250137db8c1e0bd0eb543e8e4563cb71480c00d",
+	"readme": "NativeScript Application"
 }

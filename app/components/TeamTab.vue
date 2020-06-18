@@ -30,7 +30,8 @@ export default {
 				isStarted: null,
 				isFinished: null
 			},
-			participantInfo: { id: null }
+			participantInfo: { id: null },
+			allParticipantsInfo: []
 		};
 	},
 	computed: {
@@ -38,6 +39,22 @@ export default {
 			return Math.round((this.teamInfo.totalDistance - this.teamInfo.distanceCovered) / 100) / 10 + " km";
 		},
 		listInfo() {
+			if (this.allParticipantsInfo.length === 0) return [];
+
+			let fastestPlayer = this.allParticipantsInfo.reduce((accumulator, currentValue) => {
+				let currentPlayerSpeed = currentValue.distanceCovered / currentValue.timeTaken;
+				if (accumulator.length === 0 || currentPlayerSpeed > accumulator[0].distanceCovered / accumulator[0].timeTaken) accumulator[0] = currentValue;
+				return accumulator;
+			}, []);
+			fastestPlayer = fastestPlayer[0];
+			fastestPlayer.distanceCovered;
+			let slowestPlayer = this.allParticipantsInfo.reduce((accumulator, currentValue) => {
+				let currentPlayerSpeed = currentValue.distanceCovered / currentValue.timeTaken;
+				if (accumulator.length === 0 || currentPlayerSpeed < accumulator[0].distanceCovered / accumulator[0].timeTaken) accumulator[0] = currentValue;
+				return accumulator;
+			}, []);
+
+			slowestPlayer = slowestPlayer[0];
 			return [
 				{
 					label: "My distance: ",
@@ -68,6 +85,20 @@ export default {
 						this.teamInfo.distanceCovered === null || this.teamInfo.distanceCovered === 0
 							? 0 + "km/h"
 							: Math.round((this.teamInfo.distanceCovered / 1000 / (this.teamInfo.totalTimeTaken / 360000)) * 1000) / 100 + " km/h"
+				},
+				{
+					label: "Team fastest player: ",
+					value:
+						fastestPlayer.distanceCovered === null || fastestPlayer.distanceCovered === 0
+							? "No one!"
+							: Math.round((fastestPlayer.distanceCovered / 1000 / (fastestPlayer.timeTaken / 360000)) * 1000) / 100 + " km/h"
+				},
+				{
+					label: "Team slowest player: ",
+					value:
+						slowestPlayer.distanceCovered === null || slowestPlayer.distanceCovered === 0
+							? "No one!"
+							: Math.round((slowestPlayer.distanceCovered / 1000 / (slowestPlayer.timeTaken / 360000)) * 1000) / 100 + " km/h"
 				}
 			];
 		}
@@ -93,7 +124,7 @@ export default {
 			result = result.content.toJSON();
 			this.teamInfo = { ...result.teamInfo };
 			this.participantInfo = { ...result.participantInfo };
-
+			this.allParticipantsInfo = result.allParticipantsInfo;
 			return;
 		}
 	}
