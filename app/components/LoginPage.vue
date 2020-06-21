@@ -21,7 +21,8 @@
 				<StackLayout class="hr-light" />
 			</StackLayout>
 			<Button text="Log In" @tap="submit" class="btn" />
-			<Button text="Registreren" @tap="showRegistrationForm(true, null)" class="btn" />
+			<Button text="Register" @tap="showRegistrationForm(true, null)" class="btn" />
+			<ActivityIndicator :busy="showLoadingIndicator"></ActivityIndicator>
 		</FlexboxLayout>
 		<FlexboxLayout flexDirection="column" alignItems="center" justifyContent="center" class="container-stack-layout" v-else>
 			<StackLayout class="input-field" marginBottom="10">
@@ -42,8 +43,8 @@
 				<TextField ref="newpassword" class="input" hint="Password" secure="true" v-model="newuser.password" returnKeyType="done" fontSize="18" />
 				<StackLayout class="hr-light" />
 			</StackLayout>
-			<Button text="Registreren!" @tap="registerNewUser" class="btn" />
-			<Button text="Terug naar login" @tap="showRegistrationForm(false, newuser.email)" class="btn" />
+			<Button text="Register!" @tap="registerNewUser" class="btn" />
+			<Button text="Back to login" @tap="showRegistrationForm(false, newuser.email)" class="btn" />
 		</FlexboxLayout>
 	</Page>
 </template>
@@ -59,15 +60,16 @@ export default {
 	data() {
 		return {
 			user: {
-				email: "tomvannes1@hotmail.com",
-				password: "T2962vn!"
+				email: "",
+				password: ""
 			},
 			newuser: {
-				email: "tomvannes1@hotmail.com",
+				email: "",
 				password: "",
 				passwordCheck: null
 			},
-			showRegistrationFormBool: false
+			showRegistrationFormBool: false,
+			showLoadingIndicator: false
 		};
 	},
 	methods: {
@@ -75,13 +77,10 @@ export default {
 			this.$refs.password.nativeView.focus();
 		},
 		async submit() {
-			console.log("test123");
+			this.showLoadingIndicator = true;
 			try {
 				if (this.user.email === "debug") {
-					console.log("test456");
-
 					this.$navigateTo(MainPage);
-					console.log("test");
 					return;
 				}
 
@@ -99,6 +98,8 @@ export default {
 				if (result.status === 401) {
 					Toast.makeText("Login failed! Did you already register?", "long");
 				} else {
+					console.log(result);
+					this.showLoadingIndicator = false;
 					appSettings.setString("accessToken", result.accessToken);
 					appSettings.setString("refreshToken", result.refreshToken);
 					appSettings.setNumber("userId", result.userId);
@@ -121,7 +122,7 @@ export default {
 			}).then(
 				response => {
 					const result = response.content.toJSON();
-					this.$navigator.navigate("/login");
+					this.showRegistrationFormBool = false;
 				},
 				e => {
 					Toast.makeText("Login failed! Did you already register?");

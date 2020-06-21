@@ -1,5 +1,5 @@
 <template>
-	<Page>
+	<Page actionBarHidden="true">
 		<BottomNavigation>
 			<TabStrip>
 				<TabStripItem>
@@ -7,15 +7,15 @@
 					<Image src="~/images/house-user-solid.png" stretch="aspectFit"></Image>
 				</TabStripItem>
 				<TabStripItem>
-					<Label text="Stand"></Label>
-					<Image src="~/images/flag-checkered-solid.png" stretch="aspectFit"></Image>
-				</TabStripItem>
-				<TabStripItem>
 					<Label text="Team"></Label>
 					<Image src="~/images/users-cog-solid.png" stretch="aspectFit"></Image>
 				</TabStripItem>
 				<TabStripItem>
-					<Label text="Wedstrijd"></Label>
+					<Label text="Standings"></Label>
+					<Image src="~/images/flag-checkered-solid.png" stretch="aspectFit"></Image>
+				</TabStripItem>
+				<TabStripItem>
+					<Label text="Match"></Label>
 					<Image src="~/images/running-solid.png" stretch="aspectFit"></Image>
 				</TabStripItem>
 			</TabStrip>

@@ -1,10 +1,10 @@
 <template>
 	<FlexboxLayout class="component-container" flexDirection="column">
 		<Label class="title" :text="teamInfo.teamName"></Label>
-		<PullToRefresh @refresh="refreshList">
+		<PullToRefresh class="list" @refresh="refreshList">
 			<ListView for="item in listInfo">
 				<v-template>
-					<FlexboxLayout height="150" class="row" justifyContent="space-between">
+					<FlexboxLayout height="50" class="row" justifyContent="space-between">
 						<Label class="label-info" :text="item.label"></Label>
 						<Label class="label-info" :text="item.value"></Label>
 					</FlexboxLayout>
@@ -139,8 +139,11 @@ export default {
 	background-size: cover;
 	height: 100%;
 }
-.row {
+/* .row {
 	margin: 5% 10% 5% 10%;
+} */
+.list {
+	height: 75%;
 }
 .title {
 	align-self: center;
