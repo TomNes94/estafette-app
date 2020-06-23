@@ -68,7 +68,6 @@ export default {
 					place: 1
 				}
 			});
-			console.log(item.index);
 		},
 		onPullToRefreshInitiated({ object }) {
 			this.$nextTick(() => {
