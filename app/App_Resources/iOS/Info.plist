@@ -24,8 +24,12 @@
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Enable location to allow the application to track your location to compete!</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Enable location to allow the application to track your location to compete!</string>	
 	<key>NSLocationUsageDescription</key>
 	<string>Enable location to allow the application to track your location to compete!</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Enable location to allow the application to track your location to compete!</string>	
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiresFullScreen</key>
