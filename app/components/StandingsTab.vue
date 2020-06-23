@@ -30,6 +30,7 @@
 <script>
 import { getFile, getImage, getJSON, getString, request, HttpResponse } from "tns-core-modules/http";
 import TeamModal from "./TeamModal";
+import { isIOS } from "tns-core-modules/platform";
 
 export default {
 	data() {
@@ -48,26 +49,30 @@ export default {
 	},
 	methods: {
 		onItemTap(item) {
-			let team = item.item;
-			if (team.totalTimeTaken) {
-				let hoursTaken = Math.floor(team.totalTimeTaken / 3600000);
-				let minutesTaken = Math.round((team.totalTimeTaken % 3600000) / 60000);
-				team.timeSpent = `${hoursTaken} hours and ${minutesTaken} minutes`;
+			if (isIOS) {
+				return;
 			} else {
-				team.timeSpent = 0;
-			}
-
-			this.$showModal(this.teamModal, {
-				props: {
-					teamName: team.teamName,
-					distanceCovered: Math.round(team.distanceCovered * 10) / 10000 + " km",
-					timeSpent: team.timeSpent,
-					//TODO: change below
-					//playersFinished: team.playersFinished,
-					playersFinished: 2,
-					place: 1
+				let team = item.item;
+				if (team.totalTimeTaken) {
+					let hoursTaken = Math.floor(team.totalTimeTaken / 3600000);
+					let minutesTaken = Math.round((team.totalTimeTaken % 3600000) / 60000);
+					team.timeSpent = `${hoursTaken} hours and ${minutesTaken} minutes`;
+				} else {
+					team.timeSpent = 0;
 				}
-			});
+
+				this.$showModal(this.teamModal, {
+					props: {
+						teamName: team.teamName,
+						distanceCovered: Math.round(team.distanceCovered * 10) / 10000 + " km",
+						timeSpent: team.timeSpent,
+						//TODO: change below
+						//playersFinished: team.playersFinished,
+						playersFinished: 2,
+						place: 1
+					}
+				});
+			}
 		},
 		onPullToRefreshInitiated({ object }) {
 			this.$nextTick(() => {
