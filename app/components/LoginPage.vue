@@ -52,7 +52,6 @@
 <script>
 const appSettings = require("tns-core-modules/application-settings");
 const jwtDecode = require("jwt-decode");
-const Toast = require("nativescript-toast");
 import MainPage from "./MainPage";
 
 import { getJSON, getString, request, HttpResponse } from "tns-core-modules/http";
@@ -95,9 +94,7 @@ export default {
 
 				const result = await response.json();
 
-				if (result.status === 401) {
-					Toast.makeText("Login failed! Did you already register?", "long");
-				} else {
+				if (!result.status === 401) {
 					console.log(result);
 					this.showLoadingIndicator = false;
 					appSettings.setString("accessToken", result.accessToken);
@@ -119,15 +116,10 @@ export default {
 					password: this.newuser.password,
 					deviceToken: appSettings.getString("deviceToken")
 				})
-			}).then(
-				response => {
-					const result = response.content.toJSON();
-					this.showRegistrationFormBool = false;
-				},
-				e => {
-					Toast.makeText("Login failed! Did you already register?");
-				}
-			);
+			}).then(response => {
+				const result = response.content.toJSON();
+				this.showRegistrationFormBool = false;
+			});
 		},
 		showRegistrationForm(state, email) {
 			this.showRegistrationFormBool = state;
